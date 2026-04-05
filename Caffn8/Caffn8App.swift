@@ -6,27 +6,31 @@
 //
 
 import SwiftUI
-import SwiftData
 
 @main
 struct Caffn8App: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+    @StateObject private var caffeineManager = CaffeineManager()
 
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
+    init() {
+        if NSEvent.modifierFlags.contains(.option) {
+            UserDefaults.standard.set(true, forKey: "isIconVisible")
         }
-    }()
+    }
 
     var body: some Scene {
-        WindowGroup {
-            ContentView()
+        MenuBarExtra {
+            MenuBarView()
+                .environmentObject(caffeineManager)
+        } label: {
+            Label {
+                if caffeineManager.isActive, let remaining = caffeineManager.remainingTime {
+                    Text(remaining)
+                }
+            } icon: {
+                Image("MenuBarIcon")
+                    .renderingMode(.template)
+            }
         }
-        .modelContainer(sharedModelContainer)
+        .menuBarExtraStyle(.window)
     }
 }
