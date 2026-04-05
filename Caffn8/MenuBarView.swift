@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Combine
+
 
 struct MenuBarView: View {
     @EnvironmentObject var manager: CaffeineManager
@@ -68,6 +70,15 @@ struct MenuBarView: View {
                 }
                 .padding(.horizontal)
             }
+            Toggle("Launch at Login", isOn: Binding(
+                get: { manager.launchAtLogin },
+                set: { newValue in
+                    manager.launchAtLogin = newValue
+                    manager.objectWillChange.send()
+                }
+            ))
+            .padding(.horizontal)
+
             Divider()
                 }
 

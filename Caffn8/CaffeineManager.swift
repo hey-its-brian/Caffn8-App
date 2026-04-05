@@ -6,10 +6,25 @@
 //
 import Foundation
 import Combine
+import ServiceManagement
+
 
 class CaffeineManager: ObservableObject {
     @Published var isActive = false
     @Published var remainingTime: String? = nil
+    
+    var launchAtLogin: Bool {
+        get {
+            SMAppService.mainApp.status == .enabled
+        }
+        set {
+            if newValue {
+                try? SMAppService.mainApp.register()
+            } else {
+                try? SMAppService.mainApp.unregister()
+            }
+        }
+    }
 
     private var caffeineProcess: Process?
     private var timer: Timer?
