@@ -17,6 +17,7 @@ struct MenuBarView: View {
         ("1 hour", 3600),
         ("2 hours", 7200),
         ("4 hours", 14400),
+        ("8 hours", 28800),
         ("Indefinitely", nil)
     ]
     @State private var customHours: String = ""
@@ -51,6 +52,7 @@ struct MenuBarView: View {
                 ForEach(presets, id: \.label) { preset in
                     Button(preset.label) {
                         manager.start(duration: preset.seconds)
+                        dismissWindow()
                     }
                     .padding(.horizontal)
                 }
@@ -64,6 +66,7 @@ struct MenuBarView: View {
                         if let hours = Double(customHours), hours > 0 {
                             manager.start(duration: hours * 3600)
                             customHours = ""
+                            dismissWindow()
                         }
                     }
                     .disabled(Double(customHours) == nil)
@@ -90,6 +93,11 @@ struct MenuBarView: View {
             .padding(.bottom, 8)
             .frame(width: 240)
         }
+
+    // MenuBarExtra has no dismiss API, so close the popover window directly
+    private func dismissWindow() {
+        NSApplication.shared.keyWindow?.close()
+    }
 
     private func showReappearAlert() {
         let alert = NSAlert()

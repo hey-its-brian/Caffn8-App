@@ -22,13 +22,14 @@ struct Caffn8App: App {
             MenuBarView()
                 .environmentObject(caffeineManager)
         } label: {
-            Label {
-                if caffeineManager.isActive, let remaining = caffeineManager.remainingTime {
-                    Text(remaining)
-                }
-            } icon: {
+            // A Label only renders its icon in the menu bar, so use an HStack to show the countdown too
+            HStack(spacing: 4) {
                 Image("MenuBarIcon")
                     .renderingMode(.template)
+                if caffeineManager.isActive, let remaining = caffeineManager.remainingTime {
+                    Text(remaining)
+                        .monospacedDigit()
+                }
             }
         }
         .menuBarExtraStyle(.window)

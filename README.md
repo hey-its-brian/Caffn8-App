@@ -5,10 +5,11 @@ A lightweight macOS menu bar app that keeps your Mac and display awake using the
 ## Features
 
 - Lives in the menu bar — no Dock icon
-- Preset durations: 30 minutes, 1 hour, 2 hours, 4 hours
+- Preset durations: 30 minutes, 1 hour, 2 hours, 4 hours, 8 hours
 - Custom duration input (in hours)
 - Indefinite mode
 - Live countdown timer displayed in the menu bar
+- Window closes automatically once a session starts
 - Clean stop at any time
 
 ## Requirements
